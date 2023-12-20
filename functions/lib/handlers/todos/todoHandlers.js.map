@@ -1,0 +1,36 @@
+{
+  "version": 3,
+  "sources": [
+    "../../../src/handlers/todos/todoHandlers.js"
+  ],
+  "names": [
+    "getAll",
+    "addOne",
+    "updateList",
+    "removeList",
+    "getAllTodos",
+    "ctx",
+    "todos",
+    "status",
+    "body",
+    "success",
+    "data",
+    "e",
+    "console",
+    "error",
+    "message",
+    "deleteTodos",
+    "arrIds",
+    "request",
+    "createTodo",
+    "todo",
+    "todoRes",
+    "updateTodos",
+    "isComplete"
+  ],
+  "mappings": "AAAA,SACEA,MADF,EAEEC,MAFF,EAGEC,UAHF,EAIEC,cAJF,QAKO,kCALP;;AAOA,OAAO,MAAMC,cAAc,MAAOC,GAAP,IAAe;AACxC,MAAI;AACF,UAAMC,QAAQN,QAAd;AACAK,QAAIE,MAAJ,GAAa,GAAb;AACA,WAAQF,IAAIG,IAAJ,GAAW;AACjBC,eAAS,IADQ;AAEjBC,YAAMJ;AAFW,KAAnB;AAID,GAPD,CAOE,OAAOK,CAAP,EAAU;AACVC,YAAQC,KAAR,CAAcF,CAAd;AACAN,QAAIE,MAAJ,GAAa,GAAb;AACA,WAAQF,IAAIG,IAAJ,GAAW;AACjBC,eAAS,KADQ;AAEjBI,aAAOF,EAAEG;AAFQ,KAAnB;AAID;AACF,CAhBM;;AAkBP,OAAO,MAAMC,cAAc,MAAOV,GAAP,IAAe;AACxC,MAAI;AACF,UAAM,EAAEW,MAAF,KAAaX,IAAIY,OAAJ,CAAYT,IAA/B;AACAL,mBAAea,MAAf;AACAX,QAAIE,MAAJ,GAAa,GAAb;AACA,WAAQF,IAAIG,IAAJ,GAAW;AACjBC,eAAS,IADQ;AAEjBK,eAAS;AAFQ,KAAnB;AAID,GARD,CAQE,OAAOH,CAAP,EAAU;AACVC,YAAQC,KAAR,CAAcF,CAAd;AACAN,QAAIE,MAAJ,GAAa,GAAb;AACA,WAAQF,IAAIG,IAAJ,GAAW;AACjBC,eAAS,KADQ;AAEjBI,aAAOF,EAAEG;AAFQ,KAAnB;AAID;AACF,CAjBM;;AAmBP,OAAO,MAAMI,aAAa,MAAOb,GAAP,IAAe;AACvC,MAAI;AACF,UAAMc,OAAOd,IAAIY,OAAJ,CAAYT,IAAzB;AACA,UAAMY,UAAUnB,OAAOkB,IAAP,CAAhB;AACAd,QAAIE,MAAJ,GAAa,GAAb;AACA,WAAQF,IAAIG,IAAJ,GAAW;AACjBC,eAAS,IADQ;AAEjBC,YAAMU;AAFW,KAAnB;AAID,GARD,CAQE,OAAOT,CAAP,EAAU;AACVC,YAAQC,KAAR,CAAcF,CAAd;AACAN,QAAIE,MAAJ,GAAa,GAAb;AACA,WAAQF,IAAIG,IAAJ,GAAW;AACjBC,eAAS,KADQ;AAEjBI,aAAOF,EAAEG;AAFQ,KAAnB;AAID;AACF,CAjBM;;AAmBP,OAAO,MAAMO,cAAc,MAAOhB,GAAP,IAAe;AACxC,MAAI;AACF,UAAM,EAAEW,MAAF,EAAUM,UAAV,KAAyBjB,IAAIY,OAAJ,CAAYT,IAA3C;AACAN,eAAWc,MAAX,EAAmBM,UAAnB;;AAEAjB,QAAIE,MAAJ,GAAa,GAAb;AACA,WAAQF,IAAIG,IAAJ,GAAW;AACjBC,eAAS;AADQ,KAAnB;AAGD,GARD,CAQE,OAAOE,CAAP,EAAU;AACVC,YAAQC,KAAR,CAAcF,CAAd;AACAN,QAAIE,MAAJ,GAAa,GAAb;AACA,WAAQF,IAAIG,IAAJ,GAAW;AACjBC,eAAS,KADQ;AAEjBI,aAAOF,EAAEG;AAFQ,KAAnB;AAID;AACF,CAjBM",
+  "file": "todoHandlers.js",
+  "sourcesContent": [
+    "import {\r\n  getAll,\r\n  addOne,\r\n  updateList,\r\n  removeList,\r\n} from \"../../database/todoRepository.js\";\r\n\r\nexport const getAllTodos = async (ctx) => {\r\n  try {\r\n    const todos = getAll();\r\n    ctx.status = 200;\r\n    return (ctx.body = {\r\n      success: true,\r\n      data: todos,\r\n    });\r\n  } catch (e) {\r\n    console.error(e);\r\n    ctx.status = 404;\r\n    return (ctx.body = {\r\n      success: false,\r\n      error: e.message,\r\n    });\r\n  }\r\n};\r\n\r\nexport const deleteTodos = async (ctx) => {\r\n  try {\r\n    const { arrIds } = ctx.request.body;\r\n    removeList(arrIds);\r\n    ctx.status = 204;\r\n    return (ctx.body = {\r\n      success: true,\r\n      message: \"Deleted successfully!\",\r\n    });\r\n  } catch (e) {\r\n    console.error(e);\r\n    ctx.status = 404;\r\n    return (ctx.body = {\r\n      success: false,\r\n      error: e.message,\r\n    });\r\n  }\r\n};\r\n\r\nexport const createTodo = async (ctx) => {\r\n  try {\r\n    const todo = ctx.request.body;\r\n    const todoRes = addOne(todo);\r\n    ctx.status = 201;\r\n    return (ctx.body = {\r\n      success: true,\r\n      data: todoRes,\r\n    });\r\n  } catch (e) {\r\n    console.error(e);\r\n    ctx.status = 400;\r\n    return (ctx.body = {\r\n      success: false,\r\n      error: e.message,\r\n    });\r\n  }\r\n};\r\n\r\nexport const updateTodos = async (ctx) => {\r\n  try {\r\n    const { arrIds, isComplete } = ctx.request.body;\r\n    updateList(arrIds, isComplete);\r\n\r\n    ctx.status = 200;\r\n    return (ctx.body = {\r\n      success: true,\r\n    });\r\n  } catch (e) {\r\n    console.error(e);\r\n    ctx.status = 404;\r\n    return (ctx.body = {\r\n      success: false,\r\n      error: e.message,\r\n    });\r\n  }\r\n};\r\n"
+  ]
+}

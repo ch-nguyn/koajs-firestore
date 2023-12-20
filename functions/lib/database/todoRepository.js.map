@@ -1,0 +1,34 @@
+{
+  "version": 3,
+  "sources": [
+    "../../src/database/todoRepository.js"
+  ],
+  "names": [
+    "saveData",
+    "todoRef",
+    "getAll",
+    "todos",
+    "get",
+    "console",
+    "log",
+    "addOne",
+    "todo",
+    "id",
+    "uuidv4",
+    "isCompleted",
+    "data",
+    "updateList",
+    "arrIds",
+    "isComplete",
+    "map",
+    "includes",
+    "removeList",
+    "arrId",
+    "filter"
+  ],
+  "mappings": "AAAA,SAASA,QAAT,QAAyB,wBAAzB;AACA,SAASC,OAAT,QAAwB,aAAxB;;AAEA,OAAO,MAAMC,SAAS,MAAM;AAC1B,QAAMC,QAAQF,QAAQG,GAAR,EAAd;AACAC,UAAQC,GAAR,CAAYH,KAAZ;AACA,SAAOA,KAAP;AACD,CAJM;;AAMP,OAAO,MAAMI,SAAUC,IAAD,IAAU;AAC9BA,OAAKC,EAAL,GAAUC,QAAV;AACAF,OAAKG,WAAL,GAAmB,KAAnB;AACA,MAAIC,OAAO,CAAC,GAAGT,KAAJ,EAAWK,IAAX,CAAX;AACAR,WAASY,IAAT;AACA,SAAOJ,IAAP;AACD,CANM;;AAQP,OAAO,MAAMK,aAAa,CAACC,MAAD,EAASC,aAAa,KAAtB,KAAgC;AACxD,QAAMH,OAAO,CAAC,GAAGT,KAAJ,EAAWa,GAAX,CAAgBR,IAAD,IAAU;AACpC,QAAIM,OAAOG,QAAP,CAAgBT,KAAKC,EAArB,CAAJ,EAA8B;AAC5B,UAAIM,UAAJ,EAAgB;AACdP,aAAKG,WAAL,GAAmB,IAAnB;AACD,OAFD,MAEO;AACLH,aAAKG,WAAL,GAAmB,CAACH,KAAKG,WAAzB;AACD;AACF;AACD,WAAOH,IAAP;AACD,GATY,CAAb;AAUAR,WAASY,IAAT;AACD,CAZM;;AAcP,OAAO,MAAMM,iBAAkBC,KAAD,IAAW;AACvC,QAAMP,OAAOT,MAAMiB,MAAN,CAAcZ,IAAD,IAAU,CAACW,MAAMF,QAAN,CAAeT,KAAKC,EAApB,CAAxB,CAAb;AACAT,WAASY,IAAT;AACD,CAHM",
+  "file": "todoRepository.js",
+  "sourcesContent": [
+    "import { saveData } from \"../helpers/saveData.js\";\r\nimport { todoRef } from \"./config.js\";\r\n\r\nexport const getAll = () => {\r\n  const todos = todoRef.get();\r\n  console.log(todos);\r\n  return todos;\r\n};\r\n\r\nexport const addOne = (todo) => {\r\n  todo.id = uuidv4();\r\n  todo.isCompleted = false;\r\n  let data = [...todos, todo];\r\n  saveData(data);\r\n  return todo;\r\n};\r\n\r\nexport const updateList = (arrIds, isComplete = false) => {\r\n  const data = [...todos].map((todo) => {\r\n    if (arrIds.includes(todo.id)) {\r\n      if (isComplete) {\r\n        todo.isCompleted = true;\r\n      } else {\r\n        todo.isCompleted = !todo.isCompleted;\r\n      }\r\n    }\r\n    return todo;\r\n  });\r\n  saveData(data);\r\n};\r\n\r\nexport const removeList = (arrId) => {\r\n  const data = todos.filter((todo) => !arrId.includes(todo.id));\r\n  saveData(data);\r\n};\r\n"
+  ]
+}
