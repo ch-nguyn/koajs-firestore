@@ -4,34 +4,45 @@ import db from "./config.js";
 
 const todoRef = db.collection("todos");
 
-export const getList = async (orderBy = "asc") => {
-  const snapshot = await todoRef.get();
+export const getList = async ({ orderBy = "asc", limit = 10 } = {}) => {
+  limit = Number(limit);
+  const snapshot = await todoRef
+    .orderBy("createdAt", orderBy)
+    .limit(limit)
+    .get();
   const data = snapshot.docs.map((doc) => getDataPrepare(doc));
-  return sortData(data, "createdAt", orderBy);
+  return data;
 };
 
-export const addOne = async (todo) => {
+/**
+ *
+ * @param {Data} data
+ */
+export const addOne = async (data) => {
   await todoRef.add({
-    text: todo.text,
-    isCompleted: false,
-    createdAt: Date.now(),
-    updatedAt: null,
+    ...data,
+    iscompleted: false,
+    createdAt: new Date(),
   });
 };
 
 /**
  *
  * @param {string[]} arrIds
- * @param {boolean} isComplete
+ * @param {Data} data
  */
-export const updateList = async (ids, data) => {
+export const updateList = async (data, ids = []) => {
   const jobs = ids.map((id) =>
     todoRef.doc(id).update({ ...data, updatedAt: Date.now() })
   );
   await Promise.all(jobs);
 };
 
-export const removeList = async (ids) => {
+/**
+ *
+ * @param {string[]} ids
+ */
+export const removeList = async (ids = []) => {
   const jobs = ids.map((id) => todoRef.doc(id).delete());
   await Promise.all(jobs);
 };

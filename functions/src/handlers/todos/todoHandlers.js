@@ -25,7 +25,7 @@ export function createTodo(ctx) {
 
 export const getListTodos = async (ctx) => {
   try {
-    const todos = await getList();
+    const todos = await getList(ctx.req.query);
     ctx.status = 200;
     return (ctx.body = {
       success: true,
@@ -44,7 +44,7 @@ export const getListTodos = async (ctx) => {
 export const updateTodos = async (ctx) => {
   try {
     const { arrIds, data } = ctx.req.body;
-    updateList(arrIds, data);
+    updateList(data, arrIds);
     ctx.status = 200;
     return (ctx.body = {
       success: true,
